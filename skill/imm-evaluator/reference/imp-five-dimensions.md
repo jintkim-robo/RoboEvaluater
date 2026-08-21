@@ -50,11 +50,43 @@ impact_score = mean(what, who, how_much, contribution) - max(0, risk_score - 3) 
 
 - If `outcome_valence == "negative"` → **A: Act to Avoid Harm** (the priority
   is mitigating harm, not claiming impact).
-- Else if `impact_score >= 4` and `contribution_score >= 4` →
-  **C: Contribute to Solutions**.
+- Else if `impact_score >= 4` and `contribution_score >= 4` **and
+  `evidence_risk < 4`** → **C: Contribute to Solutions**.
 - Else if `impact_score >= 2.5` → **B: Benefit Stakeholders**.
 - Else → **Insufficient impact evidence** — the inputs don't yet support an
   impact claim; strengthen evidence or reconsider the theory of change.
+
+### The evidence gate
+
+The `evidence_risk < 4` condition on C is deliberate, and it is the one rule
+here that can override otherwise-excellent scores.
+
+Claiming *Contribute to Solutions* asserts that the outcome is really
+happening. Without evidence for that, the claim is a statement of intent
+dressed as a result. The mean of the four positive dimensions cannot catch
+this on its own: an organization serving a highly underserved group (Who = 5)
+with a self-evidently important outcome (What = 5) starts halfway to a C
+before anyone has measured anything. Left ungated, the model hands its top
+classification to the exact failure mode IMM exists to prevent — sincere
+mission, unmeasured results.
+
+So when `evidence_risk` is 4 or 5, the result is capped at **B: Benefit
+Stakeholders** and the report says so explicitly, naming what would lift the
+cap. The scoring result carries an `evidence_gated` flag for this.
+
+Two clarifications that come up constantly when scoring `evidence_risk`:
+
+- **Awards, grants, investment and partnerships are not outcome evidence.**
+  They attest to an organization's standing and to funders' confidence. They
+  say nothing about whether the intended outcome occurred for stakeholders.
+  Score `evidence_risk` on outcome data — tracked results, comparison groups,
+  independent verification — not on reputation.
+- **Outputs are not outcomes.** People trained is an output. People who got
+  and kept work, and what happened to their income, is the outcome. Score the
+  latter, and use the outcome count for `scale` too.
+
+The gate only ever caps C down to B. It never promotes a weak project, and it
+never overrides an `A: Act to Avoid Harm` classification.
 
 This mirrors IMP's A/B/C classes at a conceptual level but is a deliberately
 simplified, transparent scoring rule — not the official IMP methodology.

@@ -1,0 +1,187 @@
+{
+  "_comment": "Shared fixture driving the Python/JS parity check. Each case is a full answers object; both scorers must return byte-identical results for every one. Add a case here whenever the scoring model changes.",
+  "cases": [
+    {
+      "name": "gate fires: strong scores, weak evidence",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": 4, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "gate at maximum evidence risk",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": 5, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "just below gate threshold reaches C",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": 3, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "non-integer evidence risk just below threshold",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": 3.999, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "harm outranks the gate",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "negative", "evidence_risk": 5, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "weak project stays insufficient, ungated",
+      "answers": {
+        "outcome_importance": 1, "stakeholder_underserved": 1, "scale": 10,
+        "depth": 1, "duration_years": 0.5, "counterfactual": "most",
+        "outcome_valence": "positive", "evidence_risk": 5, "external_risk": 5,
+        "stakeholder_participation_risk": 5, "drop_off_risk": 5,
+        "efficiency_risk": 5, "unexpected_impact_risk": 5
+      }
+    },
+    {
+      "name": "mid-range B, ungated",
+      "answers": {
+        "outcome_importance": 4, "stakeholder_underserved": 4, "scale": 500,
+        "depth": 4, "duration_years": 2, "counterfactual": "some",
+        "outcome_valence": "positive", "evidence_risk": 2, "external_risk": 2,
+        "stakeholder_participation_risk": 2, "drop_off_risk": 2,
+        "efficiency_risk": 2, "unexpected_impact_risk": 2
+      }
+    },
+    {
+      "name": "scale and duration band edges",
+      "answers": {
+        "outcome_importance": 3, "stakeholder_underserved": 3, "scale": 1000,
+        "depth": 3, "duration_years": 3, "counterfactual": "much",
+        "outcome_valence": "positive", "evidence_risk": 3, "external_risk": 3,
+        "stakeholder_participation_risk": 3, "drop_off_risk": 3,
+        "efficiency_risk": 3, "unexpected_impact_risk": 3
+      }
+    },
+    {
+      "name": "risk penalty active above 3.0",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": 5000,
+        "depth": 5, "duration_years": 10, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": 3, "external_risk": 5,
+        "stakeholder_participation_risk": 5, "drop_off_risk": 5,
+        "efficiency_risk": 5, "unexpected_impact_risk": 5
+      }
+    },
+    {
+      "name": "boundary values at the extremes of every range",
+      "answers": {
+        "outcome_importance": 1, "stakeholder_underserved": 5, "scale": 0,
+        "depth": 1, "duration_years": 0, "counterfactual": "most",
+        "outcome_valence": "positive", "evidence_risk": 1, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    }
+  ],
+  "invalid_cases": [
+    {
+      "name": "null evidence risk must not bypass the gate",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": null, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "string evidence risk must not bypass the gate",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": "5", "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "evidence risk above range",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": 99, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "evidence risk below range",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": -5, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "negative scale",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": -1,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": 1, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "missing non-risk key",
+      "answers": {
+        "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": 1, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "unknown outcome valence",
+      "answers": {
+        "outcome_importance": 5, "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "sideways", "evidence_risk": 1, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    },
+    {
+      "name": "boolean masquerading as a score",
+      "answers": {
+        "outcome_importance": true, "stakeholder_underserved": 5, "scale": 2000,
+        "depth": 5, "duration_years": 5, "counterfactual": "none",
+        "outcome_valence": "positive", "evidence_risk": 1, "external_risk": 1,
+        "stakeholder_participation_risk": 1, "drop_off_risk": 1,
+        "efficiency_risk": 1, "unexpected_impact_risk": 1
+      }
+    }
+  ]
+}
