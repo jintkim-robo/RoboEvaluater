@@ -1,2 +1,8 @@
 __pycache__/
 *.pyc
+
+# Real evaluation inputs are private to whoever runs the tool: they describe a
+# named organization's outcomes, evidence gaps and internal assessments. Only
+# the synthetic example is tracked.
+skill/imm-evaluator/reference/answers.*.json
+!skill/imm-evaluator/reference/answers.example.json
