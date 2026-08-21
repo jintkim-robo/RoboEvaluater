@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RoboEvaluater — IMMインパクト評価</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>RoboEvaluater</h1>
+    <p class="lead">IMP（Impact Management Project）の5次元にそって、あなたのプロジェクトのインパクトを評価します。すべてブラウザ内で完結し、データはどこにも送信されません。</p>
+  </header>
+
+  <div class="progress no-print" id="progress"></div>
+
+  <form id="wizard" class="card">
+    <!-- Step 0: basics -->
+    <section data-step="0">
+      <div class="step-label">基本情報</div>
+      <div class="field">
+        <label for="project_name">プロジェクト・団体名</label>
+        <input type="text" id="project_name" required />
+      </div>
+    </section>
+
+    <!-- Step 1: What -->
+    <section data-step="1">
+      <div class="step-label">1/5 What（何が起きるか）</div>
+      <fieldset>
+        <legend>この成果はステークホルダーにとってどれくらい重要ですか？</legend>
+        <p class="help">1: あまり重要でない 〜 5: 非常に重要</p>
+        <div class="range-row">
+          <input type="range" id="outcome_importance" min="1" max="5" value="3" />
+          <span class="range-value" id="outcome_importance_val">3</span>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>この成果はポジティブですか、それともネガティブ（害）ですか？</legend>
+        <select id="outcome_valence">
+          <option value="positive">ポジティブな成果</option>
+          <option value="negative">ネガティブな成果（害の回避が必要）</option>
+        </select>
+      </fieldset>
+    </section>
+
+    <!-- Step 2: Who -->
+    <section data-step="2">
+      <div class="step-label">2/5 Who（誰が経験するか）</div>
+      <fieldset>
+        <legend>対象となるステークホルダーは、この成果に関してどれくらい「取り残されている／脆弱」ですか？</legend>
+        <p class="help">1: あまり取り残されていない 〜 5: 非常に取り残されている・脆弱</p>
+        <div class="range-row">
+          <input type="range" id="stakeholder_underserved" min="1" max="5" value="3" />
+          <span class="range-value" id="stakeholder_underserved_val">3</span>
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- Step 3: How much -->
+    <section data-step="3">
+      <div class="step-label">3/5 How much（規模・深さ・持続期間）</div>
+      <div class="field">
+        <label for="scale">何人（何団体）に届きますか？（人数）</label>
+        <input type="number" id="scale" min="0" step="1" value="100" required />
+      </div>
+      <fieldset>
+        <legend>一人あたりの変化の大きさ（深さ）はどれくらいですか？</legend>
+        <p class="help">1: わずかな変化 〜 5: 非常に大きな変化</p>
+        <div class="range-row">
+          <input type="range" id="depth" min="1" max="5" value="3" />
+          <span class="range-value" id="depth_val">3</span>
+        </div>
+      </fieldset>
+      <div class="field">
+        <label for="duration_years">効果はどれくらいの期間続きますか？（年）</label>
+        <input type="number" id="duration_years" min="0" step="0.5" value="1" required />
+      </div>
+    </section>
+
+    <!-- Step 4: Contribution -->
+    <section data-step="4">
+      <div class="step-label">4/5 Contribution（貢献度）</div>
+      <fieldset>
+        <legend>もしこの取り組みがなかったら、同じ成果はどの程度起きていたと思いますか？（反実仮想）</legend>
+        <select id="counterfactual">
+          <option value="none">何も起きなかった（貢献度：非常に高い）</option>
+          <option value="some">一部は起きていたかもしれない</option>
+          <option value="much">かなりの部分は起きていた</option>
+          <option value="most">ほぼ同じことが起きていた（貢献度：低い）</option>
+        </select>
+      </fieldset>
+    </section>
+
+    <!-- Step 5: Risk -->
+    <section data-step="5">
+      <div class="step-label">5/5 Risk（成果が期待通りに出ないリスク）</div>
+      <p class="help">それぞれ 1（リスク低い）〜 5（リスク高い）で評価してください。</p>
+
+      <fieldset>
+        <legend>エビデンスリスク：この成果を裏付ける根拠はどれくらい弱いですか？</legend>
+        <div class="range-row">
+          <input type="range" id="evidence_risk" min="1" max="5" value="2" />
+          <span class="range-value" id="evidence_risk_val">2</span>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>外部リスク：外部要因によって成果が損なわれる可能性は？</legend>
+        <div class="range-row">
+          <input type="range" id="external_risk" min="1" max="5" value="2" />
+          <span class="range-value" id="external_risk_val">2</span>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>当事者参加リスク：ステークホルダーの声を反映せずに設計していませんか？</legend>
+        <div class="range-row">
+          <input type="range" id="stakeholder_participation_risk" min="1" max="5" value="2" />
+          <span class="range-value" id="stakeholder_participation_risk_val">2</span>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>効果剥落リスク：介入終了後、効果はすぐ薄れませんか？</legend>
+        <div class="range-row">
+          <input type="range" id="drop_off_risk" min="1" max="5" value="2" />
+          <span class="range-value" id="drop_off_risk_val">2</span>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>効率性リスク：もっと効率よく同じ成果を達成できませんか？</legend>
+        <div class="range-row">
+          <input type="range" id="efficiency_risk" min="1" max="5" value="2" />
+          <span class="range-value" id="efficiency_risk_val">2</span>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>予期せぬ影響リスク：意図しない副作用（正負とも）の可能性は？</legend>
+        <div class="range-row">
+          <input type="range" id="unexpected_impact_risk" min="1" max="5" value="2" />
+          <span class="range-value" id="unexpected_impact_risk_val">2</span>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="notes">補足メモ（任意）</label>
+        <textarea id="notes" placeholder="レポートにそのまま記載されます"></textarea>
+      </div>
+    </section>
+
+    <div class="error hidden no-print" id="error"></div>
+
+    <div class="actions no-print">
+      <button type="button" class="secondary" id="backBtn" disabled>戻る</button>
+      <button type="button" id="nextBtn">次へ</button>
+    </div>
+  </form>
+
+  <section id="reportSection" class="card report hidden">
+    <div id="reportBody"></div>
+    <div class="actions no-print">
+      <button type="button" class="secondary" id="restartBtn">最初からやり直す</button>
+      <button type="button" id="printBtn">印刷 / PDF保存</button>
+    </div>
+  </section>
+
+  <footer class="no-print" style="color: var(--muted); font-size: 0.85rem; margin-top: 2rem;">
+    <p>RoboEvaluater は IMP（Impact Management Project）の5次元フレームワークを簡略化して実装したオープンソースツールです。公式のIMP認証ではありません。技術者の方は同リポジトリの Claude スキル版もご利用いただけます。</p>
+  </footer>
+</div>
+
+<script src="scoring.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

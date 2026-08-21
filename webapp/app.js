@@ -1,0 +1,137 @@
+(function () {
+  const steps = Array.from(document.querySelectorAll("#wizard section[data-step]"));
+  const totalSteps = steps.length;
+  let current = 0;
+
+  const progressEl = document.getElementById("progress");
+  for (let i = 0; i < totalSteps; i++) {
+    const span = document.createElement("span");
+    progressEl.appendChild(span);
+  }
+
+  const backBtn = document.getElementById("backBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const errorEl = document.getElementById("error");
+  const wizardForm = document.getElementById("wizard");
+  const reportSection = document.getElementById("reportSection");
+  const reportBody = document.getElementById("reportBody");
+
+  // Wire up every range input to show its live value.
+  document.querySelectorAll('input[type="range"]').forEach((input) => {
+    const out = document.getElementById(`${input.id}_val`);
+    const sync = () => (out.textContent = input.value);
+    input.addEventListener("input", sync);
+    sync();
+  });
+
+  function showStep(index) {
+    steps.forEach((s, i) => s.classList.toggle("hidden", i !== index));
+    progressEl.querySelectorAll("span").forEach((s, i) => s.classList.toggle("done", i <= index));
+    backBtn.disabled = index === 0;
+    nextBtn.textContent = index === totalSteps - 1 ? "評価する" : "次へ";
+    errorEl.classList.add("hidden");
+  }
+
+  function currentStepValid() {
+    const section = steps[current];
+    const requiredInputs = section.querySelectorAll("input[required]");
+    for (const input of requiredInputs) {
+      if (!input.value) return false;
+    }
+    return true;
+  }
+
+  backBtn.addEventListener("click", () => {
+    if (current > 0) {
+      current -= 1;
+      showStep(current);
+    }
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (!currentStepValid()) {
+      errorEl.textContent = "この項目には入力が必要です。";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+    if (current < totalSteps - 1) {
+      current += 1;
+      showStep(current);
+    } else {
+      runEvaluation();
+    }
+  });
+
+  function collectAnswers() {
+    const val = (id) => document.getElementById(id).value;
+    return {
+      project_name: val("project_name"),
+      outcome_importance: Number(val("outcome_importance")),
+      outcome_valence: val("outcome_valence"),
+      stakeholder_underserved: Number(val("stakeholder_underserved")),
+      scale: Number(val("scale")),
+      depth: Number(val("depth")),
+      duration_years: Number(val("duration_years")),
+      counterfactual: val("counterfactual"),
+      evidence_risk: Number(val("evidence_risk")),
+      external_risk: Number(val("external_risk")),
+      stakeholder_participation_risk: Number(val("stakeholder_participation_risk")),
+      drop_off_risk: Number(val("drop_off_risk")),
+      efficiency_risk: Number(val("efficiency_risk")),
+      unexpected_impact_risk: Number(val("unexpected_impact_risk")),
+      notes: val("notes"),
+    };
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderReport(answers, result) {
+    reportBody.innerHTML = `
+      <h1>${escapeHtml(answers.project_name || "無題のプロジェクト")} — IMMインパクトレポート</h1>
+      <div class="classification-badge">${escapeHtml(result.classification)}</div>
+      <p><strong>総合インパクトスコア:</strong> ${result.impact_score} / 5</p>
+      <h2>次元別スコア</h2>
+      <table>
+        <tr><th>次元</th><th>スコア (1–5)</th></tr>
+        <tr><td>What</td><td>${result.what_score}</td></tr>
+        <tr><td>Who</td><td>${result.who_score}</td></tr>
+        <tr><td>How much</td><td>${result.how_much_score}</td></tr>
+        <tr><td>Contribution</td><td>${result.contribution_score}</td></tr>
+        <tr><td>Risk（高いほどリスク大）</td><td>${result.risk_score}</td></tr>
+      </table>
+      ${answers.notes ? `<h2>補足メモ</h2><p>${escapeHtml(answers.notes)}</p>` : ""}
+      <hr/>
+      <p style="color: var(--muted); font-size: 0.85rem;">RoboEvaluater — IMP五次元フレームワークの簡略化版による評価です。公式のIMP認証ではありません。</p>
+    `;
+  }
+
+  function runEvaluation() {
+    try {
+      const answers = collectAnswers();
+      const result = scoreAnswers(answers);
+      renderReport(answers, result);
+      wizardForm.classList.add("hidden");
+      progressEl.classList.add("hidden");
+      reportSection.classList.remove("hidden");
+    } catch (e) {
+      errorEl.textContent = e.message;
+      errorEl.classList.remove("hidden");
+    }
+  }
+
+  document.getElementById("restartBtn").addEventListener("click", () => {
+    reportSection.classList.add("hidden");
+    wizardForm.classList.remove("hidden");
+    progressEl.classList.remove("hidden");
+    current = 0;
+    showStep(current);
+  });
+
+  document.getElementById("printBtn").addEventListener("click", () => window.print());
+
+  showStep(current);
+})();
