@@ -1,0 +1,17 @@
+{
+  "project_name": "Example: after-school tutoring program",
+  "outcome_importance": 4,
+  "outcome_valence": "positive",
+  "stakeholder_underserved": 5,
+  "scale": 350,
+  "depth": 4,
+  "duration_years": 2,
+  "counterfactual": "some",
+  "evidence_risk": 2,
+  "external_risk": 3,
+  "stakeholder_participation_risk": 2,
+  "drop_off_risk": 3,
+  "efficiency_risk": 2,
+  "unexpected_impact_risk": 1,
+  "notes": "Replace every field with your own project's answers before scoring."
+}
