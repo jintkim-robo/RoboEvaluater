@@ -39,8 +39,25 @@ python3 -m http.server 8000
 `skill/imm-evaluator/scripts/evaluate.py` and `webapp/scoring.js` implement
 the *same* scoring model independently (no shared runtime between Python and
 a static web page). If you change the scoring logic in one, you must change
-it identically in the other, and verify both produce the same output on
-`skill/imm-evaluator/reference/answers.example.json`.
+it identically in the other.
+
+`skill/imm-evaluator/tests/test_parity.py` enforces this: it runs both
+implementations over every case in `tests/parity_cases.json` and fails on any
+difference in the returned scores, classification or `evidence_gated` flag. It
+also checks that both reject the same invalid input. Running the suite needs
+`node` on your PATH; without it the parity tests skip locally, but in CI they
+are a hard failure.
+
+**When you change the scoring model, add a case to `parity_cases.json` that
+covers the new behaviour.** A parity suite that doesn't exercise your change
+pins nothing about it.
+
+## Private evaluation data
+
+`answers.*.json` is gitignored apart from `answers.example.json`. Real
+evaluation inputs describe a named organization's outcomes, evidence gaps and
+internal assessments — keep them local and out of pull requests. If you want a
+worked example in the repo, write a synthetic one.
 
 ## Pull requests
 

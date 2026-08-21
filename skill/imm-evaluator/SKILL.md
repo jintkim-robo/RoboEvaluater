@@ -35,6 +35,26 @@ read it before running an evaluation.
    Flag any dimension scored low, and suggest one concrete next step per weak
    dimension (e.g. high `drop_off_risk` → discuss a sustainability plan).
 
+## Scoring evidence_risk honestly
+
+`evidence_risk` decides whether a C classification is available at all (see the
+evidence gate in `reference/imp-five-dimensions.md`), and it is the score users
+most reliably get wrong in their own favour. Two traps to name out loud when
+interviewing:
+
+- **Reputation is not outcome evidence.** Awards, grants, investment,
+  government or UN partnerships tell you funders trust the organization. They
+  do not tell you the outcome reached stakeholders. Score this dimension on
+  tracked outcome data, comparison groups, and independent verification.
+- **Outputs are not outcomes.** "We trained 50 people" is an output. "40 of
+  them were working six months later, earning on average X% more" is an
+  outcome. Push for the second; if only the first exists, `evidence_risk` is
+  4 or higher and you should say so plainly.
+
+When the gate fires, don't soften it. Report the B, and tell the user exactly
+what measurement would lift it to C — that is the most useful output this
+skill produces.
+
 ## Notes
 
 - If the user is non-technical and would rather use a form than be

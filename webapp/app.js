@@ -94,6 +94,17 @@
       <h1>${escapeHtml(answers.project_name || "無題のプロジェクト")} — IMMインパクトレポート</h1>
       <div class="classification-badge">${escapeHtml(result.classification)}</div>
       <p><strong>総合インパクトスコア:</strong> ${result.impact_score} / 5</p>
+      ${
+        result.evidence_gated
+          ? `<div class="gate-notice"><strong>エビデンス・ゲートによりBに留め置き。</strong>
+             次元スコア自体は「C: Contribute to Solutions」に達していますが、
+             その成果が実際に起きているという根拠が弱いため、Cの主張は認められません
+             （エビデンスリスク ${answers.evidence_risk}/5、ゲート発動は${EVIDENCE_GATE_RISK}以上）。
+             Cを主張する前に、アウトカムの追跡データ・比較群・第三者検証などで
+             成果測定を強化してください。受賞・出資・提携は「団体の信認」の裏付けであり、
+             「成果が出ている根拠」ではありません。</div>`
+          : ""
+      }
       <h2>次元別スコア</h2>
       <table>
         <tr><th>次元</th><th>スコア (1–5)</th></tr>
@@ -116,6 +127,18 @@
       `**Classification:** ${result.classification}`,
       `**Overall impact score:** ${result.impact_score} / 5`,
       "",
+      ...(result.evidence_gated
+        ? [
+            "> **Held at B by the evidence gate.** The dimension scores otherwise " +
+              "reach *C: Contribute to Solutions*, but the evidence that this " +
+              "outcome actually occurs is too weak to support that claim " +
+              `(\`evidence_risk\` ${answers.evidence_risk}/5, gate fires at ${EVIDENCE_GATE_RISK}). ` +
+              "Strengthen outcome measurement — tracked outcome data, a comparison " +
+              "group, or independent verification — before claiming C. Awards, " +
+              "funding and partnerships attest to standing, not to outcomes.",
+            "",
+          ]
+        : []),
       "## Dimension scores",
       "",
       "| Dimension | Score (1–5) |",

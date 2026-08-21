@@ -13,5 +13,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      # The suite includes a Python/JS parity check that shells out to node;
+      # without it those tests silently skip and the two scorers can drift.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
       - run: pip install pytest
-      - run: pytest skill/imm-evaluator/tests/
+      - run: pytest skill/imm-evaluator/tests/ -v
