@@ -36,6 +36,12 @@ python3 scripts/evaluate.py reference/answers.example.json
 [`skill/imm-evaluator/reference/imp-five-dimensions.md`](skill/imm-evaluator/reference/imp-five-dimensions.md)
 （スコアリングモデルの解説）を参照してください。
 
+## ドキュメント
+
+- [`docs/impact-frontiers-gap-analysis-2026-09.md`](docs/impact-frontiers-gap-analysis-2026-09.md)
+  — 規範の管理団体である Impact Frontiers の現行規範と本ツールのギャップ分析、
+  および今後の進化方針（2026-09）
+
 ## 開発
 
 ```
